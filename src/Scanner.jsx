@@ -7,12 +7,18 @@ const Scanner = () => {
 
     useEffect( () => {
         let stream = null;
+        let cancelled = false;
 
         async function startCamera() {
             try {
                 stream = await navigator.mediaDevices.getUserMedia({
                     video: {facingMode: 'environment'}
                 });
+
+                if( cancelled ) {
+                    if (stream) stream.getTracks().forEach(track => track.stop());
+                    return;
+                }
 
                 videoRef.current.srcObject = stream;
                 setError("");
@@ -23,6 +29,11 @@ const Scanner = () => {
         }
 
         startCamera();
+
+        return () => {
+            cancelled = true;
+            if(stream) stream.getTracks().forEach(track => track.stop());
+        }
     }, [])
 
     return (

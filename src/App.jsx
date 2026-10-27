@@ -8,7 +8,7 @@ function App() {
   const [scanning, setScanning] = useState(true);
 
   const handleScan = () => {
-    setBarcode("5449000000000996")
+    setBarcode("544900000000996")
   }
 
   const handleClear = () => {
