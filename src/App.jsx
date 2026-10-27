@@ -16,9 +16,9 @@ function App() {
   }
 
   const handleClear = () => {
-    setBarcode();
-    setLookupError();
-    setProduct();
+    setBarcode(null);
+    setLookupError(null);
+    setProduct(null);
   }
 
   const handleToggleScan = () => {
@@ -31,33 +31,46 @@ function App() {
   }
 
   useEffect( () => {
-    const fetchBarcode = async () => {
-      if(!barcode) return;
+    let cancelled = false;
+    if(!barcode){
+      setLoading(false);
+      return;
+    }
+    const lookup = async () => {
 
       const url = `https://world.openfoodfacts.org/api/v2/product/${barcode}.json`
       try {
         setLoading(true);
         setProduct(null);
         setLookupError(null);
+
         const response = await fetch(url)
         const data = await response.json();
+
+        if (cancelled) return;
 
         if(response.ok && data && data.status == 1) {
           console.log(data);
           setProduct(data.product);
-          setLoading(false);
-        } else if(data.status == 0){
-          setLookupError('Product Not Found');
+        } else {
+          setLookupError('Error: Product Not Found');
         }
 
       } catch (err) {
+        if(cancelled) return;
         console.error("Fetch Error: "+err);
+        setLookupError('Could not connect to database');
       } finally {
+        if(cancelled) return;
         setLoading(false);
       }
     }
 
-    fetchBarcode();
+    lookup();
+
+    return () => {
+      cancelled = true;
+    }
   }, [barcode])
 
   return (
