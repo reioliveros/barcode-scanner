@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import ScanResult from './ScanResult';
 import Scanner from './Scanner';
+import ProductInfo from './ProductInfo';
 
 function App() {
 
@@ -42,7 +43,8 @@ function App() {
         const data = await response.json();
 
         if(response.ok && data && data.status == 1) {
-          setProduct(data.product.product_name);
+          console.log(data);
+          setProduct(data.product);
           setLoading(false);
         } else if(data.status == 0){
           setLookupError('Product Not Found');
@@ -68,9 +70,7 @@ function App() {
 
       <div>
         <ScanResult barcode={barcode}></ScanResult>
-        {product && <div>Product Name: {product}</div>}
-        {loading && <div>Fetching product...</div>}
-        {lookupError && <div>Product Not Found</div>}
+        <ProductInfo product={product} loading={loading} error={lookupError}></ProductInfo>
       </div>
       <div>
         {scanning && <Scanner onDetect={handleDetect}/>}
