@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from "react";
 const Scanner = () => {
     const videoRef = useRef(null);
 
+    const [error, setError] = useState("");
+
     useEffect( () => {
         let stream = null;
 
@@ -13,7 +15,9 @@ const Scanner = () => {
                 });
 
                 videoRef.current.srcObject = stream;
+                setError("");
             } catch (err) {
+                setError("Allow camera use to start scanning");
                 console.error('Camera error:', err);
             }
         }
@@ -22,7 +26,10 @@ const Scanner = () => {
     }, [])
 
     return (
-        <video ref={videoRef} autoPlay playsInline muted></video>
+        <div>
+            <video ref={videoRef} autoPlay playsInline muted></video>
+            <div>{error}</div>
+        </div>
     );
 }
  
