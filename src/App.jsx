@@ -2,15 +2,19 @@ import { useEffect, useState } from 'react'
 import ScanResult from './ScanResult';
 import Scanner from './Scanner';
 import ProductInfo from './ProductInfo';
+import History from './History';
 
 function App() {
 
+  // States
   const [barcode, setBarcode] = useState(null);
   const [scanning, setScanning] = useState(true);
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(false);
   const [lookupError, setLookupError] = useState(null);
+  const [history, setHistory] = useState([])
 
+  // Handle functions
   const handleScan = () => {
     setBarcode("5449000000996")
   }
@@ -30,6 +34,7 @@ function App() {
     setScanning(false);
   }
 
+  // Runs whenever barcode is changed
   useEffect( () => {
     let cancelled = false;
     if(!barcode){
@@ -49,9 +54,11 @@ function App() {
 
         if (cancelled) return;
 
+        // Scanned barcode and found information on it
         if(response.ok && data && data.status == 1) {
           console.log(data);
           setProduct(data.product);
+
         } else {
           setLookupError('Error: Product Not Found');
         }
@@ -88,6 +95,8 @@ function App() {
       <div>
         {scanning && <Scanner onDetect={handleDetect}/>}
       </div>
+      <div>Recently Scanned Items:</div>
+      {history.length > 0 ? <History history={history}></History> : <p>No scans yet</p>}
     </div>
   )
 }

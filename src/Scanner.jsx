@@ -6,6 +6,7 @@ const Scanner = ({onDetect}) => {
 
     const [error, setError] = useState("");
 
+    // useEffect for running camera
     useEffect( () => {
         let stream = null;
         let cancelled = false;
@@ -38,12 +39,14 @@ const Scanner = ({onDetect}) => {
         }
     }, []);
 
+    // useEffect for checking for barcodes
     useEffect( () => {
         let detected = false;
         const detector = new BarcodeDetector({
             formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e']
         });
 
+        // loops every 300 milliseconds
         const id = setInterval( async () => {
             const video = videoRef.current;
             if(!video || video.readyState < 2) return;
