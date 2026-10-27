@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ScanResult from './ScanResult';
 import Scanner from './Scanner';
 
@@ -8,7 +8,7 @@ function App() {
   const [scanning, setScanning] = useState(true);
 
   const handleScan = () => {
-    setBarcode("544900000000996")
+    setBarcode("5449000000996")
   }
 
   const handleClear = () => {
@@ -18,6 +18,34 @@ function App() {
   const handleToggleScan = () => {
     setScanning( !scanning)
   }
+
+  const handleDetect = (value) => {
+    setBarcode(value);
+    setScanning(false);
+  }
+
+  useEffect( () => {
+    const fetchBarcode = async () => {
+      if(!barcode) return;
+
+      const url = `https://world.openfoodfacts.org/api/v2/product/${barcode}.json`
+      try {
+        const response = await fetch(url)
+        const data = await response.json();
+
+        if(response.ok && data) {
+          console.log("FOUND")
+          console.log(data);
+          console.log(data.product.product_name)
+        }
+
+      } catch (err) {
+        console.error("Fetch Error: "+err);
+      }
+    }
+
+    fetchBarcode();
+  }, [barcode])
 
   return (
     <div>
@@ -31,7 +59,7 @@ function App() {
         <ScanResult barcode={barcode}></ScanResult>
       </div>
       <div>
-        {scanning && <Scanner/>}
+        {scanning && <Scanner onDetect={handleDetect}/>}
       </div>
     </div>
   )

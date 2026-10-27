@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { BarcodeDetector } from "barcode-detector/ponyfill";
 
-const Scanner = () => {
+const Scanner = ({onDetect}) => {
     const videoRef = useRef(null);
 
     const [error, setError] = useState("");
@@ -39,6 +39,7 @@ const Scanner = () => {
     }, []);
 
     useEffect( () => {
+        let detected = false;
         const detector = new BarcodeDetector({
             formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e']
         });
@@ -48,11 +49,14 @@ const Scanner = () => {
             if(!video || video.readyState < 2) return;
 
             try {
-                console.log("Detecting...");
                 const results = await detector.detect(video);
                 if (results.length > 0) {
-                    console.log("Found!");
-                    console.log(results[0].rawValue);
+                    const rawValue = results[0].rawValue;
+                    console.log("Found: "+rawValue);
+                    if(!detected){
+                        onDetect(rawValue);
+                        detected = true;
+                    }
                 }
             } catch(err) {
                 console.error("Detect error:", err);
