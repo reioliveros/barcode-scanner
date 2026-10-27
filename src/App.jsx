@@ -4,8 +4,11 @@ import Scanner from './Scanner';
 
 function App() {
 
-  const [barcode, setBarcode] = useState();
+  const [barcode, setBarcode] = useState(null);
   const [scanning, setScanning] = useState(true);
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [lookupError, setLookupError] = useState(null);
 
   const handleScan = () => {
     setBarcode("5449000000996")
@@ -13,6 +16,8 @@ function App() {
 
   const handleClear = () => {
     setBarcode();
+    setLookupError();
+    setProduct();
   }
 
   const handleToggleScan = () => {
@@ -30,17 +35,23 @@ function App() {
 
       const url = `https://world.openfoodfacts.org/api/v2/product/${barcode}.json`
       try {
+        setLoading(true);
+        setProduct(null);
+        setLookupError(null);
         const response = await fetch(url)
         const data = await response.json();
 
-        if(response.ok && data) {
-          console.log("FOUND")
-          console.log(data);
-          console.log(data.product.product_name)
+        if(response.ok && data && data.status == 1) {
+          setProduct(data.product.product_name);
+          setLoading(false);
+        } else if(data.status == 0){
+          setLookupError('Product Not Found');
         }
 
       } catch (err) {
         console.error("Fetch Error: "+err);
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -57,6 +68,9 @@ function App() {
 
       <div>
         <ScanResult barcode={barcode}></ScanResult>
+        {product && <div>Product Name: {product}</div>}
+        {loading && <div>Fetching product...</div>}
+        {lookupError && <div>Product Not Found</div>}
       </div>
       <div>
         {scanning && <Scanner onDetect={handleDetect}/>}
