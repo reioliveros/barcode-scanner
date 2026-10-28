@@ -40,6 +40,15 @@ function App() {
     setScanning(false);
   }
 
+  const handleClearHistory = () => {
+    setHistory([]);
+    localStorage.setItem('history', '[]');
+  }
+
+  const handleChangeItem = (value) => {
+    setBarcode(value);
+  }
+
   // Runs whenever barcode is changed
   useEffect( () => {
     let cancelled = false;
@@ -100,7 +109,6 @@ function App() {
       <p>Point your camera at a barcode to scan it</p>
       <button onClick={handleScan}>Simulate Scan</button>
       <button onClick={handleClear}>Clear</button>
-      <button onClick={handleClearHistory}>Clear History</button>
       <button onClick={handleToggleScan}>{scanning ? "Stop Scanning" : "Start Scanning"}</button>
 
       <div>
@@ -111,7 +119,13 @@ function App() {
         {scanning && <Scanner onDetect={handleDetect}/>}
       </div>
       <div>Recently Scanned Items:</div>
-      {history.length > 0 ? <History history={history}></History> : <p>No scans yet</p>}
+      {history.length > 0 ? 
+        <History
+          history={history}
+          onClear={handleClearHistory}
+          onChangeItem={handleChangeItem}
+        />
+        : <p>No scans yet</p>}
     </div>
   )
 }
