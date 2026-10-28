@@ -64,7 +64,7 @@ function App() {
         if(response.ok && data && data.status == 1) {
           console.log(data);
           setProduct(data.product);
-
+          setHistory(prev => prev.filter( item => item.barcode !== barcode));
           setHistory(prev => [{barcode: barcode, name: (data.product ? data.product.product_name : "Unnamed Product")}, ...prev])
 
         } else {
@@ -90,6 +90,7 @@ function App() {
 
   // useEffect for history state
   useEffect( () => {
+
     localStorage.setItem('history', JSON.stringify(history));
   }, [history]);
 
@@ -99,6 +100,7 @@ function App() {
       <p>Point your camera at a barcode to scan it</p>
       <button onClick={handleScan}>Simulate Scan</button>
       <button onClick={handleClear}>Clear</button>
+      <button onClick={handleClearHistory}>Clear History</button>
       <button onClick={handleToggleScan}>{scanning ? "Stop Scanning" : "Start Scanning"}</button>
 
       <div>
