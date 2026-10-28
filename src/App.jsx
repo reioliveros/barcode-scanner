@@ -12,7 +12,13 @@ function App() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(false);
   const [lookupError, setLookupError] = useState(null);
-  const [history, setHistory] = useState([])
+  const [history, setHistory] = useState( () => {
+    try {
+      return JSON.parse(localStorage.getItem('history') || '[]');
+    } catch(err) {
+      console.error(err);
+    }
+  })
 
   // Handle functions
   const handleScan = () => {
@@ -59,6 +65,8 @@ function App() {
           console.log(data);
           setProduct(data.product);
 
+          setHistory(prev => [{barcode: barcode, name: (data.product ? data.product.product_name : "Unnamed Product")}, ...prev])
+
         } else {
           setLookupError('Error: Product Not Found');
         }
@@ -78,7 +86,12 @@ function App() {
     return () => {
       cancelled = true;
     }
-  }, [barcode])
+  }, [barcode]);
+
+  // useEffect for history state
+  useEffect( () => {
+    localStorage.setItem('history', JSON.stringify(history));
+  }, [history]);
 
   return (
     <div>
