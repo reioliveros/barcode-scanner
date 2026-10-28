@@ -114,9 +114,11 @@ function App() {
         <ScanResult barcode={barcode}></ScanResult>
         <ProductInfo product={product} loading={loading} error={lookupError}></ProductInfo>
       </div>
+
       <div>
         {scanning && <Scanner onDetect={handleDetect}/>}
       </div>
+      
       <div>Recently Scanned Items:</div>
       {history.length > 0 ? 
         <History
