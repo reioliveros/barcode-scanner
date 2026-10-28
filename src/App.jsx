@@ -17,6 +17,7 @@ function App() {
       return JSON.parse(localStorage.getItem('history') || '[]');
     } catch(err) {
       console.error(err);
+      return [];
     }
   })
 
@@ -42,7 +43,6 @@ function App() {
 
   const handleClearHistory = () => {
     setHistory([]);
-    localStorage.setItem('history', '[]');
   }
 
   const handleChangeItem = (value) => {
@@ -73,8 +73,7 @@ function App() {
         if(response.ok && data && data.status == 1) {
           console.log(data);
           setProduct(data.product);
-          setHistory(prev => prev.filter( item => item.barcode !== barcode));
-          setHistory(prev => [{barcode: barcode, name: (data.product ? data.product.product_name : "Unnamed Product")}, ...prev])
+          setHistory(prev => [{barcode: barcode, name: (data.product?.product_name ||  "Unnamed Product")}, ...prev.filter(item => item.barcode !== barcode)].slice(0, 20))
 
         } else {
           setLookupError('Error: Product Not Found');
