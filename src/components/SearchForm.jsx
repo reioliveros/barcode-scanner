@@ -6,7 +6,7 @@ const SearchForm = ({onSubmit}) => {
     return (
       <div>
         <label>Code: <input type="text" value={codeInput} onChange={e => setCodeInput(e.target.value)} /></label>
-        <button onClick={() => {onSubmit(codeInput)}}>Search</button>
+        <button onClick={() => {onSubmit(codeInput.trim())}}>Search</button>
       </div>
     );
 }

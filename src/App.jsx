@@ -84,6 +84,13 @@ function App() {
 
         } else {
           setLookupError('Error: Product Not Found');
+          setHistory(prev => [
+            {
+              barcode: barcode, 
+              name: ("Unknown Product"),
+              brand: ("Unknown Brand")
+
+            }, ...prev.filter(item => item.barcode !== barcode)].slice(0, 20))
         }
 
       } catch (err) {
