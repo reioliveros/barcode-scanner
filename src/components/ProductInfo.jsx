@@ -1,4 +1,4 @@
-import defaultImage from './assets/no-image-icon.png'
+import defaultImage from '../assets/no-image-icon.png'
 
 const ProductInfo = ({product, loading, error}) => {
     return (

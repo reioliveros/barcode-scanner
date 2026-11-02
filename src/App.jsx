@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
-import ScanResult from './ScanResult';
-import Scanner from './Scanner';
-import ProductInfo from './ProductInfo';
-import History from './History';
+import ScanResult from './components/ScanResult';
+import Scanner from './components/Scanner';
+import ProductInfo from './components/ProductInfo';
+import History from './components/History';
+import SearchForm from './components/SearchForm'
 import './App.css';
 
 function App() {
@@ -112,10 +113,7 @@ function App() {
     <div>
       <h1>Barcode Scanner</h1>
       <p>Point your camera at a barcode to scan it or input a code below</p>
-      <div>
-        <label>Code: <input type="text" value={codeInput} onChange={e => setCodeInput(e.target.value)} /></label>
-        <button onClick={() => {handleScan(codeInput)}}>Search</button>
-      </div>
+      <SearchForm onSubmit={handleScan}></SearchForm>
       <button className='clearBtn' onClick={handleClear}>Clear</button>
 
       {scanning && <Scanner onDetect={handleDetect}/>}
