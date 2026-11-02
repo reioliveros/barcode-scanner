@@ -8,7 +8,7 @@ import './App.css';
 function App() {
 
   // States
-  const [codeInput, setCodeInput] = useState(null);
+  const [codeInput, setCodeInput] = useState('');
   const [barcode, setBarcode] = useState(null);
   const [scanning, setScanning] = useState(true);
   const [product, setProduct] = useState(null);
@@ -30,13 +30,14 @@ function App() {
   }
 
   const handleClear = () => {
+    setCodeInput('');
     setBarcode(null);
     setLookupError(null);
     setProduct(null);
   }
 
   const handleToggleScan = () => {
-    setScanning( !scanning)
+    setScanning( prev => !prev )
   }
 
   const handleDetect = (value) => {
@@ -46,10 +47,6 @@ function App() {
 
   const handleClearHistory = () => {
     setHistory([]);
-  }
-
-  const handleChangeItem = (value) => {
-    setBarcode(value);
   }
 
   // Runs whenever barcode is changed
@@ -73,8 +70,8 @@ function App() {
         if (cancelled) return;
 
         // Scanned barcode and found information on it
-        if(response.ok && data && data.status == 1) {
-          console.log(data);
+        if(response.ok && data && data.status === 1) {
+          // console.log(data);
           setProduct(data.product);
           setHistory(prev => [
             {
@@ -119,7 +116,6 @@ function App() {
         <label>Code: <input type="text" value={codeInput} onChange={e => setCodeInput(e.target.value)} /></label>
         <button onClick={() => {handleScan(codeInput)}}>Search</button>
       </div>
-      <div><button onClick={handleScan}>Simulate Scan</button></div>
       <button className='clearBtn' onClick={handleClear}>Clear</button>
 
       {scanning && <Scanner onDetect={handleDetect}/>}
@@ -132,7 +128,7 @@ function App() {
         <History
           history={history}
           onClear={handleClearHistory}
-          onChangeItem={handleChangeItem}
+          onChangeItem={handleScan}
         />
         : <p>No scans yet</p>}
     </div>
