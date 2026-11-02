@@ -4,6 +4,7 @@ import Scanner from './components/Scanner';
 import ProductInfo from './components/ProductInfo';
 import History from './components/History';
 import SearchForm from './components/SearchForm'
+import fetchProduct from './api/openFoodFacts'
 import './App.css';
 
 function App() {
@@ -65,13 +66,12 @@ function App() {
         setProduct(null);
         setLookupError(null);
 
-        const response = await fetch(url)
-        const data = await response.json();
+        const data = await fetchProduct(barcode);
 
         if (cancelled) return;
 
         // Scanned barcode and found information on it
-        if(response.ok && data && data.status === 1) {
+        if(data) {
           // console.log(data);
           setProduct(data.product);
           setHistory(prev => [
