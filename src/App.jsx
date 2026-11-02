@@ -3,10 +3,12 @@ import ScanResult from './ScanResult';
 import Scanner from './Scanner';
 import ProductInfo from './ProductInfo';
 import History from './History';
+import './App.css';
 
 function App() {
 
   // States
+  const [codeInput, setCodeInput] = useState(null);
   const [barcode, setBarcode] = useState(null);
   const [scanning, setScanning] = useState(true);
   const [product, setProduct] = useState(null);
@@ -22,8 +24,9 @@ function App() {
   })
 
   // Handle functions
-  const handleScan = () => {
-    setBarcode("5449000000996")
+  const handleScan = (value) => {
+    // setBarcode("0770981095875")
+    setBarcode(value);
   }
 
   const handleClear = () => {
@@ -73,7 +76,13 @@ function App() {
         if(response.ok && data && data.status == 1) {
           console.log(data);
           setProduct(data.product);
-          setHistory(prev => [{barcode: barcode, name: (data.product?.product_name ||  "Unnamed Product")}, ...prev.filter(item => item.barcode !== barcode)].slice(0, 20))
+          setHistory(prev => [
+            {
+              barcode: barcode, 
+              name: (data.product?.product_name ||  "Unnamed Product"),
+              brand: (data.product?.brands || "Unknown Brand")
+
+            }, ...prev.filter(item => item.barcode !== barcode)].slice(0, 20))
 
         } else {
           setLookupError('Error: Product Not Found');
@@ -105,21 +114,20 @@ function App() {
   return (
     <div>
       <h1>Barcode Scanner</h1>
-      <p>Point your camera at a barcode to scan it</p>
-      <button onClick={handleScan}>Simulate Scan</button>
-      <button onClick={handleClear}>Clear</button>
-      <button onClick={handleToggleScan}>{scanning ? "Stop Scanning" : "Start Scanning"}</button>
-
+      <p>Point your camera at a barcode to scan it or input a code below</p>
       <div>
-        <ScanResult barcode={barcode}></ScanResult>
-        <ProductInfo product={product} loading={loading} error={lookupError}></ProductInfo>
+        <label>Code: <input type="text" value={codeInput} onChange={e => setCodeInput(e.target.value)} /></label>
+        <button onClick={() => {handleScan(codeInput)}}>Search</button>
       </div>
+      <div><button onClick={handleScan}>Simulate Scan</button></div>
+      <button className='clearBtn' onClick={handleClear}>Clear</button>
 
-      <div>
-        {scanning && <Scanner onDetect={handleDetect}/>}
-      </div>
-      
-      <div>Recently Scanned Items:</div>
+      {scanning && <Scanner onDetect={handleDetect}/>}
+      <ScanResult barcode={barcode}></ScanResult>
+      <ProductInfo product={product} loading={loading} error={lookupError}></ProductInfo>
+      <div><button className="scanBtn" onClick={handleToggleScan}>{scanning ? "Stop Scan" : "Scan Item"}</button></div>
+
+
       {history.length > 0 ? 
         <History
           history={history}
