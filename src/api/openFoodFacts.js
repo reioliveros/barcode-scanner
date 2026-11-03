@@ -1,9 +1,9 @@
 
-export async function fetchProduct(barcode) {
+export async function fetchProduct(barcode, signal) {
     const url = `https://world.openfoodfacts.org/api/v2/product/${barcode}.json`
 
     try {
-        const response = await fetch(url);
+        const response = await fetch(url, {signal});
         const data = await response.json();
 
         if(response.ok && data && data.status === 1) {

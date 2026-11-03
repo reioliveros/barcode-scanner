@@ -7,7 +7,7 @@ export function useProductLookup(barcode) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    let cancelled = false;
+    const controller = new AbortController();
 
     if(!barcode){
       setLoading(false);
@@ -20,28 +20,29 @@ export function useProductLookup(barcode) {
         setProduct(null);
         setError(null);
 
-        const data = await fetchProduct(barcode);
+        const data = await fetchProduct(barcode, controller.signal);
 
-        if (cancelled) return;
+        if (controller.signal.aborted) return;
 
         // Scanned barcode and found information on it
         setProduct(data.product);
         if(!product) setError("Error: Product Not Found");
 
       } catch (err) {
-        if(cancelled) return;
+        if (err.name === "AbortError") return;
         console.error("Lookup Error: "+err);
         setError('Could not connect to database');
       } finally {
-        if(cancelled) return;
-        setLoading(false);
+        if(controller.signal.aborted) {
+            setLoading(false);
+        }
       }
     }
 
     lookup();
 
     return () => {
-      cancelled = true;
+        controller.abort();
     }
   }, [barcode])
 
