@@ -120,7 +120,7 @@ function App() {
     <div>
       <h1>Barcode Scanner</h1>
       <p>Point your camera at a barcode to scan it or input a code below</p>
-      <SearchForm onSubmit={handleScan}></SearchForm>
+      <SearchForm onSearch={handleScan}></SearchForm>
       <button className='clearBtn' onClick={handleClear}>Clear</button>
 
       {scanning && <Scanner onDetect={handleDetect}/>}

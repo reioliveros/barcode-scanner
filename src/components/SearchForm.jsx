@@ -1,13 +1,16 @@
 import { useState } from "react";
 
-const SearchForm = ({onSubmit}) => {
+const SearchForm = ({onSearch}) => {
     const [codeInput, setCodeInput] = useState('');
 
     return (
-      <div>
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        onSearch(codeInput.trim());
+      }}>
         <label>Code: <input type="text" value={codeInput} onChange={e => setCodeInput(e.target.value)} /></label>
-        <button onClick={() => {onSubmit(codeInput.trim())}}>Search</button>
-      </div>
+        <button type="submit">Search</button>
+      </form>
     );
 }
  
