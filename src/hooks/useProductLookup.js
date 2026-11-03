@@ -10,30 +10,33 @@ export function useProductLookup(barcode) {
     const controller = new AbortController();
 
     if(!barcode){
+      setProduct(null);
       setLoading(false);
+      setError(null);
       return;
     }
 
     const lookup = async () => {
-      try {
-        setLoading(true);
-        setProduct(null);
-        setError(null);
+      setLoading(true);
+      setProduct(null);
+      setError(null);
 
-        const data = await fetchProduct(barcode, controller.signal);
+      try {
+        const result = await fetchProduct(barcode, controller.signal);
 
         if (controller.signal.aborted) return;
 
         // Scanned barcode and found information on it
-        setProduct(data.product);
-        if(!product) setError("Error: Product Not Found");
+        if(result){ setProduct(result) }
+        else setError("Product Not Found");
+
 
       } catch (err) {
-        if (err.name === "AbortError") return;
-        console.error("Lookup Error: "+err);
+        if(controller.signal.aborted) return;
         setError('Could not connect to database');
+        console.error("Lookup Error: "+err);
       } finally {
-        if(controller.signal.aborted) {
+        if(!controller.signal.aborted) {
             setLoading(false);
         }
       }

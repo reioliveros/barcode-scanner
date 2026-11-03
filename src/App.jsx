@@ -13,7 +13,7 @@ function App() {
   // States
   const [barcode, setBarcode] = useState(null);
   const [scanning, setScanning] = useState(true);
-  const { product, loading, error} = useProductLookup(barcode)
+  const { product, loading, error } = useProductLookup(barcode)
   const [history, setHistory] = useLocalStorage('history', [])
 
   // Handle functions
@@ -23,10 +23,8 @@ function App() {
   }
 
   const handleClear = () => {
-    setCodeInput('');
     setBarcode(null);
-    setLookupError(null);
-    setProduct(null);
+    product = null;
   }
 
   const handleToggleScan = () => {
@@ -43,13 +41,15 @@ function App() {
   }
 
   useEffect( () => {
-    setHistory(prev => [
-    {
-      barcode: barcode, 
-      name: (product?.product_name ||  "Unnamed Product"),
-      brand: (product?.brands || "Unknown Brand")
-
-    }, ...prev.filter(item => item.barcode !== barcode)].slice(0, 20))
+    if(barcode){      
+      setHistory(prev => [
+      {
+        barcode: barcode, 
+        name: (product?.product_name ||  "Unnamed Product"),
+        brand: (product?.brands || "Unknown Brand")
+  
+      }, ...prev.filter(item => item.barcode !== barcode)].slice(0, 20))
+    }
   }, [product])
 
   // useEffect for history state

@@ -4,7 +4,7 @@ const ProductInfo = ({product, loading, error}) => {
     return (
         <div>
             {loading && <div>Looking up product...</div>}
-            {error && <div>Product not found</div>}
+            {error && <div>{error}</div>}
             {product && 
             <div>
                 <img src={product.image_front_small_url || defaultImage} alt={product?.product_name || 'No image available'} />
