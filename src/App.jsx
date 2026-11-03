@@ -18,13 +18,7 @@ function App() {
 
   // Handle functions
   const handleScan = (value) => {
-    // setBarcode("0770981095875")
     setBarcode(value);
-  }
-
-  const handleClear = () => {
-    setBarcode(null);
-    product = null;
   }
 
   const handleToggleScan = () => {
@@ -63,7 +57,6 @@ function App() {
       <h1>Barcode Scanner</h1>
       <p>Point your camera at a barcode to scan it or input a code below</p>
       <SearchForm onSearch={handleScan}></SearchForm>
-      <button className='clearBtn' onClick={handleClear}>Clear</button>
 
       {scanning && <Scanner onDetect={handleDetect}/>}
       <ScanResult barcode={barcode}></ScanResult>
