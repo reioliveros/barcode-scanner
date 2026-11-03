@@ -52,11 +52,11 @@ function App() {
     }
   }, [product])
 
-  // useEffect for history state
-  useEffect( () => {
+  // // useEffect for history state
+  // useEffect( () => {
 
-    localStorage.setItem('history', JSON.stringify(history));
-  }, [history]);
+  //   localStorage.setItem('history', JSON.stringify(history));
+  // }, [history]);
 
   return (
     <div>

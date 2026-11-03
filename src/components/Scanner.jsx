@@ -55,7 +55,6 @@ const Scanner = ({onDetect}) => {
                 const results = await detector.detect(video);
                 if (results.length > 0) {
                     const rawValue = results[0].rawValue;
-                    console.log("Found: "+rawValue);
                     if(!detected){
                         onDetect(rawValue);
                         detected = true;
