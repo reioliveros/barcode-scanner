@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useProductLookup } from './hooks/useProductLookup';
+import { useLocalStorage } from './hooks/useLocalStorage';
 import ScanResult from './components/ScanResult';
 import Scanner from './components/Scanner';
 import ProductInfo from './components/ProductInfo';
@@ -10,18 +11,10 @@ import './App.css';
 function App() {
 
   // States
-  const [codeInput, setCodeInput] = useState('');
   const [barcode, setBarcode] = useState(null);
   const [scanning, setScanning] = useState(true);
   const { product, loading, error} = useProductLookup(barcode)
-  const [history, setHistory] = useState( () => {
-    try {
-      return JSON.parse(localStorage.getItem('history') || '[]');
-    } catch(err) {
-      console.error(err);
-      return [];
-    }
-  });
+  const [history, setHistory] = useLocalStorage('history', [])
 
   // Handle functions
   const handleScan = (value) => {
