@@ -1,5 +1,5 @@
 
-async function fetchProduct(barcode) {
+export async function fetchProduct(barcode) {
     const url = `https://world.openfoodfacts.org/api/v2/product/${barcode}.json`
 
     try {
@@ -13,8 +13,6 @@ async function fetchProduct(barcode) {
         }
 
     } catch (err) {
-        console.error(err);
+        console.error("Fetch Error: "+err);
     }
 }
-
-export default fetchProduct

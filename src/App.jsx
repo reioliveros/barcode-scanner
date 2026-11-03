@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
+import { useProductLookup } from './hooks/useProductLookup';
 import ScanResult from './components/ScanResult';
 import Scanner from './components/Scanner';
 import ProductInfo from './components/ProductInfo';
 import History from './components/History';
 import SearchForm from './components/SearchForm'
-import fetchProduct from './api/openFoodFacts'
 import './App.css';
 
 function App() {
@@ -13,9 +13,7 @@ function App() {
   const [codeInput, setCodeInput] = useState('');
   const [barcode, setBarcode] = useState(null);
   const [scanning, setScanning] = useState(true);
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [lookupError, setLookupError] = useState(null);
+  const { product, loading, error} = useProductLookup(barcode)
   const [history, setHistory] = useState( () => {
     try {
       return JSON.parse(localStorage.getItem('history') || '[]');
@@ -23,7 +21,7 @@ function App() {
       console.error(err);
       return [];
     }
-  })
+  });
 
   // Handle functions
   const handleScan = (value) => {
@@ -51,64 +49,15 @@ function App() {
     setHistory([]);
   }
 
-  // Runs whenever barcode is changed
   useEffect( () => {
-    let cancelled = false;
-    if(!barcode){
-      setLoading(false);
-      return;
-    }
-    const lookup = async () => {
+    setHistory(prev => [
+    {
+      barcode: barcode, 
+      name: (product?.product_name ||  "Unnamed Product"),
+      brand: (product?.brands || "Unknown Brand")
 
-      const url = `https://world.openfoodfacts.org/api/v2/product/${barcode}.json`
-      try {
-        setLoading(true);
-        setProduct(null);
-        setLookupError(null);
-
-        const data = await fetchProduct(barcode);
-
-        if (cancelled) return;
-
-        // Scanned barcode and found information on it
-        if(data) {
-          // console.log(data);
-          setProduct(data.product);
-          setHistory(prev => [
-            {
-              barcode: barcode, 
-              name: (data.product?.product_name ||  "Unnamed Product"),
-              brand: (data.product?.brands || "Unknown Brand")
-
-            }, ...prev.filter(item => item.barcode !== barcode)].slice(0, 20))
-
-        } else {
-          setLookupError('Error: Product Not Found');
-          setHistory(prev => [
-            {
-              barcode: barcode, 
-              name: ("Unknown Product"),
-              brand: ("Unknown Brand")
-
-            }, ...prev.filter(item => item.barcode !== barcode)].slice(0, 20))
-        }
-
-      } catch (err) {
-        if(cancelled) return;
-        console.error("Fetch Error: "+err);
-        setLookupError('Could not connect to database');
-      } finally {
-        if(cancelled) return;
-        setLoading(false);
-      }
-    }
-
-    lookup();
-
-    return () => {
-      cancelled = true;
-    }
-  }, [barcode]);
+    }, ...prev.filter(item => item.barcode !== barcode)].slice(0, 20))
+  }, [product])
 
   // useEffect for history state
   useEffect( () => {
@@ -125,7 +74,7 @@ function App() {
 
       {scanning && <Scanner onDetect={handleDetect}/>}
       <ScanResult barcode={barcode}></ScanResult>
-      <ProductInfo product={product} loading={loading} error={lookupError}></ProductInfo>
+      <ProductInfo product={product} loading={loading} error={error}></ProductInfo>
       <div><button className="scanBtn" onClick={handleToggleScan}>{scanning ? "Stop Scan" : "Scan Item"}</button></div>
 
 
