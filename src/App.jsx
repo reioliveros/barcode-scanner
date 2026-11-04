@@ -13,7 +13,7 @@ function App() {
   // States
   const [barcode, setBarcode] = useState(null);
   const [scanning, setScanning] = useState(true);
-  const { product, loading, error } = useProductLookup(barcode)
+  const { product, status } = useProductLookup(barcode)
   const [history, setHistory] = useLocalStorage('history', [])
 
   // Handle functions
@@ -46,12 +46,6 @@ function App() {
     }
   }, [product])
 
-  // // useEffect for history state
-  // useEffect( () => {
-
-  //   localStorage.setItem('history', JSON.stringify(history));
-  // }, [history]);
-
   return (
     <div>
       <h1>Barcode Scanner</h1>
@@ -60,7 +54,7 @@ function App() {
 
       {scanning && <Scanner onDetect={handleDetect}/>}
       <ScanResult barcode={barcode}></ScanResult>
-      <ProductInfo product={product} loading={loading} error={error}></ProductInfo>
+      <ProductInfo status={status} product={product}></ProductInfo>
       <div><button className="scanBtn" onClick={handleToggleScan}>{scanning ? "Stop Scan" : "Scan Item"}</button></div>
 
 

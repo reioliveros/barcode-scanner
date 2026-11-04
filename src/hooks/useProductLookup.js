@@ -2,24 +2,19 @@ import { useEffect, useState } from "react";
 import { fetchProduct } from '../api/openFoodFacts'
 
 export function useProductLookup(barcode) {
+  const [status, setStatus] = useState(('idle' | 'loading' | 'found' | 'not-found' | 'error'))
   const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const controller = new AbortController();
 
     if(!barcode){
-      setProduct(null);
-      setLoading(false);
-      setError(null);
+      setStatus('idle');
       return;
     }
 
     const lookup = async () => {
-      setLoading(true);
-      setProduct(null);
-      setError(null);
+      setStatus('loading');
 
       try {
         const result = await fetchProduct(barcode, controller.signal);
@@ -27,18 +22,14 @@ export function useProductLookup(barcode) {
         if (controller.signal.aborted) return;
 
         // Scanned barcode and found information on it
-        if(result){ setProduct(result) }
-        else setError("Product Not Found");
+        if(result){ setProduct(result); setStatus('found'); }
+        else setStatus('not-found');
 
 
       } catch (err) {
         if(controller.signal.aborted) return;
-        setError('Could not connect to database');
+        setStatus('error');
         console.error("Lookup Error: "+err);
-      } finally {
-        if(!controller.signal.aborted) {
-            setLoading(false);
-        }
       }
     }
 
@@ -49,5 +40,5 @@ export function useProductLookup(barcode) {
     }
   }, [barcode])
 
-  return { product, loading, error}
+  return { status, product}
 }

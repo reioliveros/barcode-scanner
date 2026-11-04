@@ -2,6 +2,7 @@ const History = ({history, onClear, onChangeItem}) => {
     return (
         <div className="history">
             <table>
+                <tbody>
                 <tr><th className="top" colSpan="4">Recently Scanned Items</th></tr>
                 <tr>
                     <th>Brand</th>
@@ -17,6 +18,7 @@ const History = ({history, onClear, onChangeItem}) => {
                         <td><button onClick={() => {onChangeItem(item.barcode)}}>Search</button></td>
                     </tr>
                 ))}
+                </tbody>
             </table>
 
             {history.length > 0 ? <button onClick={onClear}>Clear History</button> : ''}
