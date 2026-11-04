@@ -17,6 +17,7 @@ export function useProductLookup(barcode) {
     if(!barcode){
       setStatus('idle');
       setProduct(null);
+      setLookedUp(null);
       return;
     }
 

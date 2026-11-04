@@ -58,7 +58,7 @@ function App() {
       <SearchForm onSearch={handleScan} onClear={handleClear}></SearchForm>
 
       {scanning && <Scanner onDetect={handleDetect}/>}
-      <ScanResult barcode={lookedUp}></ScanResult>
+      <ScanResult barcode={barcode}></ScanResult>
       <ProductInfo status={status} product={product} onRetry={retry}></ProductInfo>
       <div><button className="scanBtn" onClick={handleToggleScan}>{scanning ? "Stop Scan" : "Scan Item"}</button></div>
 
