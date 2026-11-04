@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { fetchProduct } from '../api/openFoodFacts'
 
 export function useProductLookup(barcode) {
-  const [status, setStatus] = useState(('idle' | 'loading' | 'found' | 'not-found' | 'error'))
+  const [status, setStatus] = useState('idle') // 'idle' | 'loading' | 'found' | 'not-found' | 'error'
   const [product, setProduct] = useState(null);
+  const [lookedUp, setLookedUp] = useState(null);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -24,11 +25,17 @@ export function useProductLookup(barcode) {
         if (controller.signal.aborted) return;
 
         // Scanned barcode and found information on it
-        if(result){ setProduct(result); setStatus('found'); }
-        else setStatus('not-found');
+        setLookedUp(barcode);
+        if(result){
+          setProduct(result);
+          setStatus('found');
+        } else {
+          setStatus('not-found');
+        }
 
 
       } catch (err) {
+        if (controller.signal.aborted) return;
         setStatus('error');
         console.error("Lookup Error: "+err);
       }
@@ -41,5 +48,5 @@ export function useProductLookup(barcode) {
     }
   }, [barcode])
 
-  return { status, product}
+  return { status, product, lookedUp}
 }

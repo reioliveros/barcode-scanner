@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const SearchForm = ({onSearch}) => {
+const SearchForm = ({onSearch, onClear}) => {
     const [codeInput, setCodeInput] = useState('');
 
     return (
@@ -14,7 +14,7 @@ const SearchForm = ({onSearch}) => {
         </form>
         <button className="clearBtn" onClick={() => {
           setCodeInput('');
-          onSearch(null)
+          onClear();
         }}>Clear</button>
       </div>
     );

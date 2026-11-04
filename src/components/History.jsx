@@ -5,6 +5,7 @@ const History = ({history, onClear, onChangeItem}) => {
                 <tbody>
                 <tr><th className="top" colSpan="4">Recently Scanned Items</th></tr>
                 <tr>
+                    <th>Status</th>
                     <th>Brand</th>
                     <th>Item Name</th>
                     <th colSpan={2}>Barcode</th>
@@ -12,10 +13,13 @@ const History = ({history, onClear, onChangeItem}) => {
 
                 {history.map(item=> (
                     <tr key={item.barcode}>
+                        <td className={(item.found === 'Found') ? 'foundItem' : (item.found === 'Not Found' ? 'notFoundItem' : 'unknownItem')}>{item.found || "Unknown"}</td>
                         <td>{item.brand}</td>
                         <td>{item.name}</td>
                         <td>{item.barcode} </td>
-                        <td><button onClick={() => {onChangeItem(item.barcode)}}>Search</button></td>
+                        <td><button onClick={() => {
+                            onChangeItem(item.barcode);
+                        }}>Search</button></td>
                     </tr>
                 ))}
                 </tbody>

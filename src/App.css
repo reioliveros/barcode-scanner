@@ -44,3 +44,15 @@ li {
     padding: 10px 15px;
     margin: 5px
 }
+
+.foundItem {
+    color: green;
+}
+
+.notFoundItem {
+    color: red;
+}
+
+.unknownItem {
+    color: purple;
+}

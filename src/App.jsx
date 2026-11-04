@@ -13,12 +13,16 @@ function App() {
   // States
   const [barcode, setBarcode] = useState(null);
   const [scanning, setScanning] = useState(true);
-  const { product, status } = useProductLookup(barcode)
+  const { status, product, lookedUp } = useProductLookup(barcode)
   const [history, setHistory] = useLocalStorage('history', [])
 
   // Handle functions
   const handleScan = (value) => {
     setBarcode(value);
+  }
+
+  const handleClear = () => {
+    setBarcode(null);
   }
 
   const handleToggleScan = () => {
@@ -35,25 +39,26 @@ function App() {
   }
 
   useEffect( () => {
-    if(barcode){      
+    if(status === 'found' || status === 'not-found'){  
       setHistory(prev => [
       {
-        barcode: barcode, 
+        barcode: lookedUp, 
         name: (product?.product_name ||  "Unnamed Product"),
-        brand: (product?.brands || "Unknown Brand")
+        brand: (product?.brands || "Unknown Brand"),
+        found: (status === 'found' ? 'Found' : 'Not Found')
   
-      }, ...prev.filter(item => item.barcode !== barcode)].slice(0, 20))
+      }, ...prev.filter(item => item.barcode !== lookedUp)].slice(0, 20))
     }
-  }, [product])
+  }, [status])
 
   return (
     <div>
       <h1>Barcode Scanner</h1>
       <p>Point your camera at a barcode to scan it or input a code below</p>
-      <SearchForm onSearch={handleScan}></SearchForm>
+      <SearchForm onSearch={handleScan} onClear={handleClear}></SearchForm>
 
       {scanning && <Scanner onDetect={handleDetect}/>}
-      <ScanResult barcode={barcode}></ScanResult>
+      <ScanResult barcode={lookedUp}></ScanResult>
       <ProductInfo status={status} product={product}></ProductInfo>
       <div><button className="scanBtn" onClick={handleToggleScan}>{scanning ? "Stop Scan" : "Scan Item"}</button></div>
 
