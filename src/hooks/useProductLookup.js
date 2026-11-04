@@ -26,7 +26,7 @@ export function useProductLookup(barcode) {
       setStatus('loading');
 
       try {
-        const result = await fetchProduct(barcode, controller.signal);
+        const result = await fetchProduct(encodeURIComponent(barcode), controller.signal);
 
         if (controller.signal.aborted) return;
 

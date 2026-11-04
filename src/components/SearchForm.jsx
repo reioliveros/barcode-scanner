@@ -7,6 +7,7 @@ const SearchForm = ({onSearch, onClear}) => {
       <div>
         <form onSubmit={(e) => {
           e.preventDefault();
+          if(!codeInput) return;
           onSearch(codeInput.trim());
         }}>
           <label>Code: <input type="text" value={codeInput} onChange={e => setCodeInput(e.target.value)} /></label>

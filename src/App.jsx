@@ -18,6 +18,7 @@ function App() {
 
   // Handle functions
   const handleScan = (value) => {
+    if(value === barcode) retry();
     setBarcode(value);
   }
 

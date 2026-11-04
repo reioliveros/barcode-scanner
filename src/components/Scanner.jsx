@@ -69,7 +69,7 @@ const Scanner = ({onDetect}) => {
         return ( () => {
             clearInterval(id);
         })
-    }, []);
+    });
 
     return (
         <div>
