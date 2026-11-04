@@ -1,6 +1,6 @@
 
 export async function fetchProduct(barcode, signal) {
-    const url = `https://world.openfoodfacts.org/api/v2/product/${barcode}.json`
+    const url = `https://world.openfoodfacts.org/api/v2/product/${encodeURIComponent(barcode)}.json`
 
     const response = await fetch(url, {signal});
     const data = await response.json();

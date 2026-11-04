@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { fetchProduct } from '../api/openFoodFacts'
 
-export function useProductLookup(barcode) {
-  const [status, setStatus] = useState('idle') // 'idle' | 'loading' | 'found' | 'not-found' | 'error'
-  const [product, setProduct] = useState(null);
-  const [lookedUp, setLookedUp] = useState(null);
+export function useProductLookup(barcode, onResult) {
+  const [result, setResult] = useState(null) // null or {barcode, attempt, status, product}
   const [attempt, setAttempt] = useState(0);
 
   const retry = () => {
@@ -12,37 +10,23 @@ export function useProductLookup(barcode) {
   }
 
   useEffect(() => {
+    if(!barcode) return;
     const controller = new AbortController();
 
-    if(!barcode){
-      setStatus('idle');
-      setProduct(null);
-      setLookedUp(null);
-      return;
-    }
 
     const lookup = async () => {
-      setProduct(null);
-      setStatus('loading');
-
       try {
-        const result = await fetchProduct(encodeURIComponent(barcode), controller.signal);
-
+        const product = await fetchProduct(barcode, controller.signal);
         if (controller.signal.aborted) return;
 
         // Scanned barcode and found information on it
-        setLookedUp(barcode);
-        if(result){
-          setProduct(result);
-          setStatus('found');
-        } else {
-          setStatus('not-found');
-        }
+        setResult({barcode, attempt, status: (product ? 'found' : 'not-found'), product});
+        onResult({barcode, product: product});
 
 
       } catch (err) {
         if (controller.signal.aborted) return;
-        setStatus('error');
+        setResult({barcode, attempt, status: 'error', product: null})
         console.error("Lookup Error: "+err);
       }
     }
@@ -52,7 +36,15 @@ export function useProductLookup(barcode) {
     return () => {
         controller.abort();
     }
-  }, [barcode, attempt])
+  }, [barcode, attempt, onResult])
 
-  return { status, product, lookedUp, retry}
+  if (!barcode) {
+    return {status: 'idle', product: null, retry}
+  }
+
+  if(result && result.barcode === barcode && result.attempt === attempt){
+    return {status: result.status, product: result.product, retry}
+  }
+
+  return {status: 'loading', product: null, retry}
 }

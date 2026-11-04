@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useProductLookup } from './hooks/useProductLookup';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import ScanResult from './components/ScanResult';
@@ -13,11 +13,25 @@ function App() {
   // States
   const [barcode, setBarcode] = useState(null);
   const [scanning, setScanning] = useState(true);
-  const { status, product, lookedUp, retry} = useProductLookup(barcode)
   const [history, setHistory] = useLocalStorage('history', [])
 
   // Handle functions
+
+  const handleResult = useCallback(({barcode, product}) => {
+    setHistory(prev => [
+    {
+      barcode: barcode, 
+      name: (product?.product_name ||  "Unnamed Product"),
+      brand: (product?.brands || "Unknown Brand"),
+      found: Boolean(product)
+
+    }, ...prev.filter(item => item.barcode !== barcode)].slice(0, 20))
+  }, [setHistory]);
+
+  const { status, product, retry } = useProductLookup(barcode, handleResult)
+
   const handleScan = (value) => {
+    // refreshes when scanning the same barcode
     if(value === barcode) retry();
     setBarcode(value);
   }
@@ -31,6 +45,7 @@ function App() {
   }
 
   const handleDetect = (value) => {
+    if(value === barcode) retry();
     setBarcode(value);
     setScanning(false);
   }
@@ -39,18 +54,6 @@ function App() {
     setHistory([]);
   }
 
-  useEffect( () => {
-    if(status === 'found' || status === 'not-found'){  
-      setHistory(prev => [
-      {
-        barcode: lookedUp, 
-        name: (product?.product_name ||  "Unnamed Product"),
-        brand: (product?.brands || "Unknown Brand"),
-        found: (status === 'found')
-  
-      }, ...prev.filter(item => item.barcode !== lookedUp)].slice(0, 20))
-    }
-  }, [status])
 
   return (
     <div>
