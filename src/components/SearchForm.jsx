@@ -11,11 +11,11 @@ const SearchForm = ({onSearch, onClear}) => {
         }}>
           <label>Code: <input type="text" value={codeInput} onChange={e => setCodeInput(e.target.value)} /></label>
           <button type="submit">Search</button>
-        </form>
         <button className="clearBtn" onClick={() => {
           setCodeInput('');
           onClear();
         }}>Clear</button>
+        </form>
       </div>
     );
 }

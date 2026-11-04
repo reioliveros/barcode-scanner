@@ -14,6 +14,7 @@ table {
 
 input {
     padding: 5px;
+    margin: 5px;
 }
 
 th, td {
@@ -51,10 +52,6 @@ li {
 
 .notFoundItem {
     color: red;
-}
-
-.unknownItem {
-    color: purple;
 }
 
 .tryAgainBtn {

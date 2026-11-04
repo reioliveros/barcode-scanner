@@ -45,7 +45,7 @@ function App() {
         barcode: lookedUp, 
         name: (product?.product_name ||  "Unnamed Product"),
         brand: (product?.brands || "Unknown Brand"),
-        found: (status === 'found' ? 'Found' : 'Not Found')
+        found: (status === 'found')
   
       }, ...prev.filter(item => item.barcode !== lookedUp)].slice(0, 20))
     }
