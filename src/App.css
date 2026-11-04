@@ -56,3 +56,7 @@ li {
 .unknownItem {
     color: purple;
 }
+
+.tryAgainBtn {
+    margin: 5px;
+}

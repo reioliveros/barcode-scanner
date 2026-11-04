@@ -5,6 +5,11 @@ export function useProductLookup(barcode) {
   const [status, setStatus] = useState('idle') // 'idle' | 'loading' | 'found' | 'not-found' | 'error'
   const [product, setProduct] = useState(null);
   const [lookedUp, setLookedUp] = useState(null);
+  const [attempt, setAttempt] = useState(0);
+
+  const retry = () => {
+    setAttempt(n => n + 1)
+  }
 
   useEffect(() => {
     const controller = new AbortController();
@@ -46,7 +51,7 @@ export function useProductLookup(barcode) {
     return () => {
         controller.abort();
     }
-  }, [barcode])
+  }, [barcode, attempt])
 
-  return { status, product, lookedUp}
+  return { status, product, lookedUp, retry}
 }

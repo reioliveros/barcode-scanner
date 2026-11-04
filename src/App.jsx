@@ -13,7 +13,7 @@ function App() {
   // States
   const [barcode, setBarcode] = useState(null);
   const [scanning, setScanning] = useState(true);
-  const { status, product, lookedUp } = useProductLookup(barcode)
+  const { status, product, lookedUp, retry} = useProductLookup(barcode)
   const [history, setHistory] = useLocalStorage('history', [])
 
   // Handle functions
@@ -59,7 +59,7 @@ function App() {
 
       {scanning && <Scanner onDetect={handleDetect}/>}
       <ScanResult barcode={lookedUp}></ScanResult>
-      <ProductInfo status={status} product={product}></ProductInfo>
+      <ProductInfo status={status} product={product} onRetry={retry}></ProductInfo>
       <div><button className="scanBtn" onClick={handleToggleScan}>{scanning ? "Stop Scan" : "Scan Item"}</button></div>
 
 
