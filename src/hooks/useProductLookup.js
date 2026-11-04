@@ -10,10 +10,12 @@ export function useProductLookup(barcode) {
 
     if(!barcode){
       setStatus('idle');
+      setProduct(null);
       return;
     }
 
     const lookup = async () => {
+      setProduct(null);
       setStatus('loading');
 
       try {
@@ -27,7 +29,6 @@ export function useProductLookup(barcode) {
 
 
       } catch (err) {
-        if(controller.signal.aborted) return;
         setStatus('error');
         console.error("Lookup Error: "+err);
       }

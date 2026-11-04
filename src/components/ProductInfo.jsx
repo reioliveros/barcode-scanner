@@ -8,12 +8,11 @@ const ProductInfo = ({status, product}) => {
                     case 'loading':
                         return <div>Looking up product...</div>
 
-                    case 'not-found':
-                        return <div>Product not found</div>
-
                     case 'error':
                         return <div>Could not connect to database</div>
 
+                    case 'not-found':
+                        return (<div>Product not found</div>);
                     case 'found':
                         return (<div>
                                     <img src={product.image_front_small_url || defaultImage} alt={product?.product_name || 'No image available'} />
