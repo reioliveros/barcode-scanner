@@ -1,16 +1,5 @@
-# React + Vite
+# Barcode Scanner
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+This is a project that I thought of while working at a bakery. We would have to constantly scan items and then look into a binder to find their marked shelf life. Then we would have to calculate what that day would be and label the items as such. I found it all to be a little tedious, especially for someone that has been there for only a month or two.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+Working on this project has taught me a lot about using React. I did use AI to help guide me through the steps of creating such an app, but no code was ever copy and pasted from the AI. I wanted this to be purely educational and did not want the whole thing to be vibe coded.
