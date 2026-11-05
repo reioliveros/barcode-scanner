@@ -7,7 +7,7 @@ const DateSheet = () => {
         return date.toDateString();
     }
 
-    const days = [5, 7, 10, 14, 21, 30, 45, 90];
+    const days = [5, 7, 10, 14, 21, 30, 45, 60, 90];
 
     return (
         <div className="datesSheet">
