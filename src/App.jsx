@@ -6,6 +6,7 @@ import Scanner from './components/Scanner';
 import ProductInfo from './components/ProductInfo';
 import History from './components/History';
 import SearchForm from './components/SearchForm'
+import DateSheet from './components/DateSheet'
 import './App.css';
 
 function App() {
@@ -74,6 +75,8 @@ function App() {
           onChangeItem={handleScan}
         />
         : <p>No scans yet</p>}
+
+      <DateSheet></DateSheet>
     </div>
   )
 }

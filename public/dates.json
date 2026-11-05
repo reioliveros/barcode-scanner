@@ -4,7 +4,20 @@
 
         "0079879400235": {
             "name": "Pumpkin Creme Cake",
+            "brand": "Olsen's Baking Company",
             "shelf_life_days": 10
+        },
+
+        "0770981095875": {
+            "name": "two-bite brownies",
+            "brand": "two-bite",
+            "shelf_life_days": 45
+        },
+
+        "0826846281003": {
+            "name": "Ciabatta Baguette",
+            "brand": "Boulart",
+            "shelf_life_days": 5
         }
 
     },
