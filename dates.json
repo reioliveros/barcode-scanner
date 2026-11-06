@@ -22,15 +22,7 @@
 
     },
 
-    "foods": {
-
-        "creme cake": {
-            "shelf_life_days": 10
-        },
-
-        "izzio": {
-            "shelf_life_days": 10
-        }
+    "": {
         
     }
 
