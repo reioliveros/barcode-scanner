@@ -13,7 +13,7 @@ function App() {
 
   // States
   const [barcode, setBarcode] = useState(null);
-  const [scanning, setScanning] = useState(true);
+  const [scanning, setScanning] = useState(false);
   const [history, setHistory] = useLocalStorage('history', [])
 
   // Handle functions
@@ -22,7 +22,7 @@ function App() {
     setHistory(prev => [
     {
       barcode: barcode, 
-      name: (product?.product_name ||  "Unnamed Product"),
+      name: (product?.product_name ||  "Unknown Product"),
       brand: (product?.brands || "Unknown Brand"),
       found: Boolean(product)
 
