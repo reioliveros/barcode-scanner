@@ -22,8 +22,8 @@ function App() {
     setHistory(prev => [
     {
       barcode: barcode, 
-      name: (product?.product_name ||  "Unknown Product"),
-      brand: (product?.brands || "Unknown Brand"),
+      name: (product?.product_name ||  null),
+      brand: (product?.brands || null),
       found: Boolean(product)
 
     }, ...prev.filter(item => item.barcode !== barcode)].slice(0, 20))
@@ -58,7 +58,7 @@ function App() {
 
   return (
     <div>
-      <h1>Barcode Scanner</h1>
+      <h1>Rei's Barcode Scanner</h1>
       <p>Point your camera at a barcode to scan it or input a code below</p>
       <SearchForm onSearch={handleScan} onClear={handleClear}></SearchForm>
 

@@ -20,10 +20,10 @@ const History = ({history, onClear, onChangeItem}) => {
                                 (item.found ? 'Found' : 'Not Found')
                             }
                         </td>
-                        <td>{item.brand}</td>
-                        <td>{item.name}</td>
-                        <td>{item.barcode} </td>
-                        <td><button onClick={() => {
+                        <td>{item.brand || "Unknown Brand"}</td>
+                        <td>{item.name || "Unknown Product"}</td>
+                        <td className="barcode">{item.barcode} </td>
+                        <td className="tableSearchBtn"><button  onClick={() => {
                             onChangeItem(item.barcode);
                         }}>Search</button></td>
                     </tr>

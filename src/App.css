@@ -1,8 +1,10 @@
 button {
     background-color: #226CE0;
+    color: white;
     border-style: hidden;
     border-radius: 10px;
     padding: 10px;
+    margin: 5px;
 }
 
 table {
@@ -22,9 +24,12 @@ th, td {
     text-align: left;
 }
 
+table {
+    border-collapse: collapse;
+}
+
 table, th, td {
     border: 1px solid black;
-    border-collapse: collapse;
 }
 
 .top {
@@ -33,17 +38,6 @@ table, th, td {
 
 li {
     list-style: none;
-}
-
-.scanBtn {
-    padding: 15px;
-    font-size: 20px;
-    margin: 10px;
-}
-
-.clearBtn {
-    padding: 10px 15px;
-    margin: 5px
 }
 
 .foundItem {
@@ -64,4 +58,18 @@ li {
 
 .datesSheet tr:nth-child(odd) {
     background-color: #7f778b;
+}
+
+.barcode {
+    border-right: none;
+}
+
+.tableSearchBtn {
+    border-left: none;
+}
+
+.saveForm {
+    border: 1px solid white;
+    width: 50%;
+    margin: 0 auto;
 }
