@@ -1,6 +1,6 @@
 const History = ({history, onClear, onChangeItem}) => {
     return (
-        <div className="history">
+        <div className="history zebra">
             <table>
                 <caption>Recently Scanned Items:</caption>
                 <tbody>

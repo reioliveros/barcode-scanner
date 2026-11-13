@@ -10,7 +10,7 @@ const DateSheet = () => {
     const days = [5, 7, 10, 14, 21, 30, 45, 60, 90];
 
     return (
-        <div className="datesSheet">
+        <div className="datesSheet zebra">
         <div>Todays Date: {today.toDateString()}</div>
         <table >
             <caption>Shelf Life Dates Sheet</caption>
