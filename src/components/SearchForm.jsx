@@ -10,7 +10,8 @@ const SearchForm = ({onSearch, onClear}) => {
           if(!codeInput) return;
           onSearch(codeInput.trim());
         }}>
-          <label>Code: <input type="text" value={codeInput} onChange={e => setCodeInput(e.target.value)} /></label>
+          <label>Code:</label>
+          <input type="text" value={codeInput} onChange={e => setCodeInput(e.target.value)} />
           <button type="submit">Search</button>
         <button className="clearBtn" onClick={() => {
           setCodeInput('');

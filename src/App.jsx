@@ -7,6 +7,7 @@ import ProductInfo from './components/ProductInfo';
 import History from './components/History';
 import SearchForm from './components/SearchForm'
 import DateSheet from './components/DateSheet'
+import SaveForm from './components/SaveForm'
 import {saveProduct, deleteProduct} from './utils/myProducts'
 import './App.css';
 
@@ -24,8 +25,8 @@ function App() {
     setHistory(prev => [
     {
       barcode: barcode, 
-      name: (product?.product_name ||  null),
       brand: (product?.brands || null),
+      name: (product?.product_name ||  null),
       found: Boolean(product)
 
     }, ...prev.filter(item => item.barcode !== barcode)].slice(0, 20))
@@ -57,6 +58,12 @@ function App() {
     setHistory([]);
   }
 
+  const handleSave = (data) => {
+    setMyProducts( (prev) => {
+      return saveProduct(prev, barcode, data)
+    })
+  }
+
 
   return (
     <div>
@@ -67,6 +74,7 @@ function App() {
       {scanning && <Scanner onDetect={handleDetect}/>}
       <ScanResult barcode={barcode}></ScanResult>
       <ProductInfo status={status} product={product} onRetry={retry}></ProductInfo>
+      {barcode && status !== 'loading' && !myProducts[barcode] && <SaveForm onSave={handleSave}></SaveForm>}
       <div><button className="scanBtn" onClick={handleToggleScan}>{scanning ? "Stop Scan" : "Scan Item"}</button></div>
 
 

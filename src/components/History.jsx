@@ -1,4 +1,4 @@
-const History = ({history, onClear, onChangeItem}) => {
+const History = ({history, myProducts, onClear, onChangeItem}) => {
     return (
         <div className="history">
             <table>

@@ -1,25 +1,53 @@
-const SaveForm = () => {
+import { useState } from "react";
+
+const SaveForm = ({onSave}) => {
+    const [brand, setBrand] = useState('');
+    const [name, setName] = useState('');
+    const [shelfLife, setShelfLife] = useState('');
+
     return (
-        <form className="saveForm" action="">
+        <form className="saveForm" action="" onSubmit={ (e) => {
+            e.preventDefault();
+            if(shelfLife < 0) setShelfLife(-1);
+            else setShelfLife( Number(shelfLife) )
+
+            onSave({brand, name, shelfLife});
+        }}>
             <p>Save New Product</p>
 
             <div>
-                <label htmlFor="">Brand:</label>
-                <input type="text" />
+                <label htmlFor="brand">Brand:</label>
+                <input
+                    id="brand"
+                    type="text"
+                    value={brand}
+                    onChange={ e => setBrand(e.target.value)}
+                />
             </div>
 
             <div>
-                <label htmlFor="">Name:</label>
-                <input type="text" />
+                <label htmlFor="name">Name:</label>
+                <input
+                    id="name"
+                    type="text"
+                    value={name}
+                    onChange={ e => setName(e.target.value) }
+                />
             </div>
 
             <div>
-                <label htmlFor="">Shelf Life:</label>
-                <input placeholder="Days" type="number" />
+                <label htmlFor="shelfLife">Shelf Life:</label>
+                <input
+                    id="shelfLife"
+                    placeholder="Days"
+                    type="number"
+                    value={shelfLife}
+                    onChange={ e => setShelfLife(e.target.value)}
+                />
             </div>
 
-            <button>Save</button>
-            <button>Cancel</button>
+            <button type="submit">Save</button>
+            <button type="button">Cancel</button>
         </form>
     );
 }
