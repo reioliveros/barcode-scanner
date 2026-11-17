@@ -7,6 +7,7 @@ import ProductInfo from './components/ProductInfo';
 import History from './components/History';
 import SearchForm from './components/SearchForm'
 import DateSheet from './components/DateSheet'
+import {saveProduct, deleteProduct} from './utils/myProducts'
 import './App.css';
 
 function App() {
@@ -14,7 +15,8 @@ function App() {
   // States
   const [barcode, setBarcode] = useState(null);
   const [scanning, setScanning] = useState(false);
-  const [history, setHistory] = useLocalStorage('history', [])
+  const [history, setHistory] = useLocalStorage('history', []);
+  const [myProducts, setMyProducts] = useLocalStorage('myProducts', {});
 
   // Handle functions
 
