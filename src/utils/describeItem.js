@@ -1,14 +1,13 @@
-
 export function describeItem(logEntry, mine) {
-    const name = mine?.name || logEntry?.name || "Unknown Product";
-    const brand = mine?.brand || logEntry?.brand || "Unknown Brand";
-    const shelfLifeDays = mine?.shelfLife || '???';
+    const name = mine?.name || logEntry?.name || null;
+    const brand = mine?.brand || logEntry?.brand || null;
+    const shelfLifeDays = mine?.shelfLifeDays || null;
 
-    let useBy = '???';
-    if( !isNaN(shelfLifeDays) ) {
+    let useBy = null;
+    if( shelfLifeDays > 0 ) {
         const date = new Date();
-        useBy = date.setDate(date.getDate() + shelfLifeDays)
+        date.setDate(date.getDate() + parseInt(shelfLifeDays));
+        useBy = date.toDateString();
     }
-    console.log({name, brand, shelfLifeDays, useBy})
     return {name, brand, shelfLifeDays, useBy}
 }

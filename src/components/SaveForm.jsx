@@ -3,15 +3,15 @@ import { useState } from "react";
 const SaveForm = ({onSave}) => {
     const [brand, setBrand] = useState('');
     const [name, setName] = useState('');
-    const [shelfLife, setShelfLife] = useState('');
+    const [shelfLifeDays, setShelfLifeDays] = useState('');
 
     return (
         <form className="saveForm" action="" onSubmit={ (e) => {
             e.preventDefault();
-            if(shelfLife < 0) setShelfLife(-1);
-            else setShelfLife( Number(shelfLife) )
+            if(shelfLifeDays < 0) setShelfLifeDays(-1);
+            else setShelfLifeDays( Number(shelfLifeDays) )
 
-            onSave({brand, name, shelfLife});
+            onSave({brand, name, shelfLifeDays});
         }}>
             <p>Save New Product</p>
 
@@ -36,13 +36,13 @@ const SaveForm = ({onSave}) => {
             </div>
 
             <div>
-                <label htmlFor="shelfLife">Shelf Life:</label>
+                <label htmlFor="shelfLifeDays">Shelf Life (Days):</label>
                 <input
-                    id="shelfLife"
+                    id="shelfLifeDays"
                     placeholder="Days"
                     type="number"
-                    value={shelfLife}
-                    onChange={ e => setShelfLife(e.target.value)}
+                    value={shelfLifeDays}
+                    onChange={ e => setShelfLifeDays(e.target.value)}
                 />
             </div>
 

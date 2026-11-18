@@ -56,7 +56,7 @@ li {
     margin: 20px;
 }
 
-.datesSheet tr:nth-child(odd) {
+.zebra tr:nth-child(odd) {
     background-color: #7f778b;
 }
 

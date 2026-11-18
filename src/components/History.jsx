@@ -1,18 +1,24 @@
+import { describeItem } from "../utils/describeItem";
+
+
 const History = ({history, myProducts, onClear, onChangeItem}) => {
     return (
-        <div className="history">
+        <div className="history zebra">
             <table>
                 <caption>Recently Scanned Items:</caption>
                 <tbody>
                 <tr>
-                    <th>Status</th>
+                    <th>API Status</th>
                     <th>Brand</th>
                     <th>Item Name</th>
                     <th colSpan={2}>Barcode</th>
+                    <th>Shelf Life</th>
+                    <th>Use By</th>
                 </tr>
 
-                {history.map(item=> (
-                    <tr key={item.barcode}>
+                {history.map(item=>{
+                    const info = describeItem(item, myProducts[item.barcode])
+                    return ( <tr key={item.barcode}>
                         <td className={
                             (item.found ? 'foundItem' : 'notFoundItem')
                         }>
@@ -20,14 +26,16 @@ const History = ({history, myProducts, onClear, onChangeItem}) => {
                                 (item.found ? 'Found' : 'Not Found')
                             }
                         </td>
-                        <td>{item.brand || "Unknown Brand"}</td>
-                        <td>{item.name || "Unknown Product"}</td>
+                        <td>{info.brand || "Unknown Brand"}</td>
+                        <td>{info.name || "Unknown Name"}</td>
                         <td className="barcode">{item.barcode} </td>
                         <td className="tableSearchBtn"><button  onClick={() => {
                             onChangeItem(item.barcode);
                         }}>Search</button></td>
+                        <td>{info.shelfLifeDays || '???'}</td>
+                        <td>{info.useBy || '???'}</td>
                     </tr>
-                ))}
+                )})}
                 </tbody>
             </table>
 

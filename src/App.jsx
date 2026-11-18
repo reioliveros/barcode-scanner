@@ -81,6 +81,7 @@ function App() {
       {history.length > 0 ? 
         <History
           history={history}
+          myProducts={myProducts}
           onClear={handleClearHistory}
           onChangeItem={handleScan}
         />
