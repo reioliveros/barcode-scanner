@@ -4,17 +4,26 @@ const SaveForm = ({onSave}) => {
     const [brand, setBrand] = useState('');
     const [name, setName] = useState('');
     const [shelfLifeDays, setShelfLifeDays] = useState('');
+    const [error, setError] = useState('');
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+    
+        const days = Number(shelfLifeDays)
+    
+        if ( !Number.isInteger(days) || days <= 0){
+            setError('Enter a whole number of days');
+            return;
+        }
+        
+        setError('');
+        onSave({brand: brand.trim(), name: name.trim(), shelfLifeDays: days});
+    }
 
     return (
-        <form className="saveForm" action="" onSubmit={ (e) => {
-            e.preventDefault();
-            if(shelfLifeDays < 0) setShelfLifeDays(-1);
-            else setShelfLifeDays( Number(shelfLifeDays) )
-
-            onSave({brand, name, shelfLifeDays});
-        }}>
+        <form className="saveForm" onSubmit={handleSubmit}>
             <p>Save New Product</p>
-
+            {error && <p className="error">{error}</p>}
             <div>
                 <label htmlFor="brand">Brand:</label>
                 <input
@@ -47,7 +56,6 @@ const SaveForm = ({onSave}) => {
             </div>
 
             <button type="submit">Save</button>
-            <button type="button">Cancel</button>
         </form>
     );
 }

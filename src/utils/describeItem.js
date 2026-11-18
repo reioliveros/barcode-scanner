@@ -6,8 +6,9 @@ export function describeItem(logEntry, mine) {
     let useBy = null;
     if( shelfLifeDays > 0 ) {
         const date = new Date();
-        date.setDate(date.getDate() + parseInt(shelfLifeDays));
+        date.setDate(date.getDate() + shelfLifeDays);
         useBy = date.toDateString();
     }
+
     return {name, brand, shelfLifeDays, useBy}
 }

@@ -13,7 +13,7 @@ const History = ({history, myProducts, onClear, onChangeItem}) => {
                     <th>Item Name</th>
                     <th colSpan={2}>Barcode</th>
                     <th>Shelf Life</th>
-                    <th>Use By</th>
+                    <th>Use By (From Today)</th>
                 </tr>
 
                 {history.map(item=>{
