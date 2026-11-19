@@ -51,6 +51,8 @@ const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete 
 {/* SEARCH */}
                 <td className="tableSearchBtn">
                   <button
+                    title="Search"
+                    aria-label="Lookup barcode"
                     onClick={() => {
                       onChangeItem(item.barcode);
                     }}
@@ -107,6 +109,8 @@ const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete 
                 <td>
                   {editingBarcode !== item.barcode && (
                     <button
+                      title="Edit"
+                      aria-label="Edit item brand, namd, and shelf life"
                       className="editIconBtn"
                       onClick={() => {
                         if (editingBarcode !== item.barcode) {
@@ -121,19 +125,25 @@ const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete 
 
                   {editingBarcode === item.barcode && (
                     <div className="saveCancelBtns">
-                      <button onClick={() => {
-                        const days = Number(draft.shelfLifeDays)
-                        if( draft.shelfLifeDays && !isWholeNumber(days)){
-                          return;
-                        }
-                        onSave({brand: draft.brand, name: draft.name, shelfLifeDays: days});
-                        setDraft({})
-                        setEditinBarcode(null);
-                      }}>
+                      <button 
+                        title="Save"
+                        aria-label="Save inputted item brand, name, and shelf life"
+                        onClick={() => {
+                          const days = Number(draft.shelfLifeDays)
+                          if( draft.shelfLifeDays && !isWholeNumber(days)){
+                            return;
+                          }
+                          onSave({brand: draft.brand, name: draft.name, shelfLifeDays: days});
+                          setDraft({})
+                          setEditinBarcode(null);
+                        }}>
                         <Save />
                       </button>
 
-                      <button onClick={() => {
+                      <button
+                      title="Cancel"
+                      aria-label="Cancel editing product"
+                      onClick={() => {
                         setEditinBarcode(null);
                         setDraft({});
                       }}>
