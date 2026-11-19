@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { isWholeNumber } from '../utils/isWholeNumber'
 
 const SaveForm = ({onSave, initialBrand, initialName, initialShelf}) => {
     const [brand, setBrand] = useState(initialBrand || '');
@@ -11,7 +12,7 @@ const SaveForm = ({onSave, initialBrand, initialName, initialShelf}) => {
     
         const days = Number(shelfLifeDays)
     
-        if ( !Number.isInteger(days) || days <= 0){
+        if ( !isWholeNumber(shelfLifeDays) ){
             setError('Enter a whole number of days');
             return;
         }
