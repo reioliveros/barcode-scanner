@@ -64,6 +64,20 @@ function App() {
     })
   }
 
+  const handleDelete = (barcodeToDelete) => {
+    const userChoice = window.confirm("Are you sure you want to delete this entry's history and stored shelf data?")
+
+    if(userChoice){
+      setMyProducts( prev => {
+        return deleteProduct(prev, barcodeToDelete)
+      })
+  
+      setHistory(prev => {
+        return prev.filter(item => item.barcode !== barcodeToDelete)
+      })
+    }
+  }
+
 
   return (
     <div>
@@ -74,7 +88,16 @@ function App() {
       {scanning && <Scanner onDetect={handleDetect}/>}
       <ScanResult barcode={barcode}></ScanResult>
       <ProductInfo status={status} product={product} onRetry={retry}></ProductInfo>
-      {barcode && status !== 'loading' && !myProducts[barcode] && <SaveForm onSave={handleSave}></SaveForm>}
+      {barcode && status !== 'loading' && !myProducts[barcode] && status !== 'error' &&
+        <SaveForm
+          key={barcode}
+          onSave={handleSave}
+          initialBrand={product?.brands}
+          initialName={product?.product_name}
+          initialShelf={myProducts[barcode]?.shelfLifeDays}
+        >
+        </SaveForm>
+      }
       <div><button className="scanBtn" onClick={handleToggleScan}>{scanning ? "Stop Scan" : "Scan Item"}</button></div>
 
 
@@ -84,6 +107,7 @@ function App() {
           myProducts={myProducts}
           onClear={handleClearHistory}
           onChangeItem={handleScan}
+          onDelete={handleDelete}
         />
         : <p>No scans yet</p>}
 

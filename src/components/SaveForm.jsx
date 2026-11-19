@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-const SaveForm = ({onSave}) => {
-    const [brand, setBrand] = useState('');
-    const [name, setName] = useState('');
-    const [shelfLifeDays, setShelfLifeDays] = useState('');
+const SaveForm = ({onSave, initialBrand, initialName, initialShelf}) => {
+    const [brand, setBrand] = useState(initialBrand || '');
+    const [name, setName] = useState(initialName || '');
+    const [shelfLifeDays, setShelfLifeDays] = useState(initialShelf || '');
     const [error, setError] = useState('');
 
     const handleSubmit = (e) => {
@@ -56,6 +56,7 @@ const SaveForm = ({onSave}) => {
             </div>
 
             <button type="submit">Save</button>
+            <button type="button">Cancel</button>
         </form>
     );
 }
