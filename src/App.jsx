@@ -107,6 +107,7 @@ function App() {
           myProducts={myProducts}
           onClear={handleClearHistory}
           onChangeItem={handleScan}
+          onSave={handleSave}
           onDelete={handleDelete}
         />
         : <p>No scans yet</p>}
