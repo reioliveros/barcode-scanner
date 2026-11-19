@@ -4,7 +4,7 @@ import { isWholeNumber } from "../utils/isWholeNumber"
 import { Search, Save, X, Trash, Pencil } from "lucide-react";
 
 const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete }) => {
-  const [editingBarcode, setEditinBarcode] = useState(null);
+  const [editingBarcode, setEditingBarcode] = useState(null);
   const [draft, setDraft] = useState({});
 
   return (
@@ -113,10 +113,8 @@ const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete 
                       aria-label="Edit item brand, namd, and shelf life"
                       className="editIconBtn"
                       onClick={() => {
-                        if (editingBarcode !== item.barcode) {
-                          setDraft({brand: info.brand, name: info.name, shelfLifeDays: info.shelfLifeDays})
-                          setEditinBarcode(item.barcode);
-                        }
+                        setDraft({brand: info.brand, name: info.name, shelfLifeDays: info.shelfLifeDays})
+                        setEditingBarcode(item.barcode);
                       }}
                     >
                       <Pencil />
@@ -133,9 +131,9 @@ const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete 
                           if( draft.shelfLifeDays && !isWholeNumber(days)){
                             return;
                           }
-                          onSave({brand: draft.brand, name: draft.name, shelfLifeDays: days});
+                          onSave({brand: draft.brand.trim(), name: draft.name.trim(), shelfLifeDays: days});
                           setDraft({})
-                          setEditinBarcode(null);
+                          setEditingBarcode(null);
                         }}>
                         <Save />
                       </button>
@@ -144,7 +142,7 @@ const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete 
                       title="Cancel"
                       aria-label="Cancel editing product"
                       onClick={() => {
-                        setEditinBarcode(null);
+                        setEditingBarcode(null);
                         setDraft({});
                       }}>
                         <X></X>
