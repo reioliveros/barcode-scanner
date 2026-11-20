@@ -1,26 +1,80 @@
-const SaveForm = () => {
-    return (
-        <form className="saveForm" action="">
-            <p>Save New Product</p>
+import { useState } from "react";
+import { isPositiveWholeNumber } from "../utils/isPositiveWholeNumber";
 
-            <div>
-                <label htmlFor="">Brand:</label>
-                <input type="text" />
-            </div>
+const SaveForm = ({ onSave, initialBrand, initialName, barcode }) => {
+  const [brand, setBrand] = useState(initialBrand || "");
+  const [name, setName] = useState(initialName || "");
+  const [shelfLifeDays, setShelfLifeDays] = useState("");
+  const [error, setError] = useState("");
 
-            <div>
-                <label htmlFor="">Name:</label>
-                <input type="text" />
-            </div>
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-            <div>
-                <label htmlFor="">Shelf Life:</label>
-                <input placeholder="Days" type="number" />
-            </div>
+    const days = Number(shelfLifeDays);
 
+<<<<<<< HEAD
             <button>Save</button>
         </form>
     );
 }
  
 export default SaveForm;
+=======
+    if (!isPositiveWholeNumber(days)) {
+      setError("Enter a whole number of days");
+      return;
+    }
+
+    setError("");
+    onSave(barcode, { brand: brand.trim(), name: name.trim(), shelfLifeDays: days });
+  };
+
+  return (
+    <form className="saveForm" onSubmit={handleSubmit}>
+      <p>Save New Product</p>
+      {error && <p className="error">{error}</p>}
+      <div>
+        <label htmlFor="brand">Brand:</label>
+        <input
+          id="brand"
+          type="text"
+          value={brand}
+          onChange={(e) => {
+            setBrand(e.target.value);
+          }}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="name">Name:</label>
+        <input
+          id="name"
+          type="text"
+          value={name}
+          onChange={(e) => {
+            setName(e.target.value);
+          }}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="shelfLifeDays">Shelf Life (Days):</label>
+        <input
+          id="shelfLifeDays"
+          placeholder="Days"
+          type="number"
+          value={shelfLifeDays}
+          onChange={(e) => {
+            setShelfLifeDays(e.target.value);
+          }}
+        />
+      </div>
+
+      <button type="submit">Save</button>
+      <button type="button">Cancel</button>
+    </form>
+  );
+};
+
+export default SaveForm;
+>>>>>>> save-form

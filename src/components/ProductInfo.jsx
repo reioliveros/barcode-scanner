@@ -11,13 +11,6 @@ const ProductInfo = ({status, product, onRetry}) => {
                         <button className='tryAgainBtn' onClick={onRetry}>Try Again</button>
                     </div>
                 )
-                else if (status === 'not-found')
-                    return (
-                    <div>
-                        <p className='notFoundItem'>Product not found</p>
-                        <SaveForm></SaveForm>
-                    </div>
-                    )
                 else if (status === 'found') return (
                     <div>
                         <img src={product.image_front_small_url || defaultImage} alt={product?.product_name || 'No image available'} />
