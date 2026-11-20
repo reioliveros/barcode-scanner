@@ -75,7 +75,10 @@ function App() {
       setHistory(prev => {
         return prev.filter(item => item.barcode !== barcodeToDelete)
       })
+      return true
     }
+
+    return false
   }
 
 

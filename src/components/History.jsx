@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { describeItem } from "../utils/describeItem";
-import { isWholeNumber } from "../utils/isWholeNumber"
+import { isPositiveWholeNumber } from "../utils/isPositiveWholeNumber"
 import { Search, Save, X, Trash, Pencil } from "lucide-react";
 
 const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete }) => {
@@ -30,20 +30,22 @@ const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete 
             const isEditing = editingBarcode === item.barcode;
             return (
               <tr key={item.barcode}>
+{/* DELETE */}
                 <td>
                   <button
                     title="Delete"
                     aria-label="Delete this item and its saved shelf life"
                     className="deleteBtn"
                     onClick={() => {
-                      onDelete(item.barcode);
+                      if(onDelete(item.barcode) && isEditing)
+                        setEditingBarcode(null);
                     }}
                   >
                     <Trash />
                   </button>
                 </td>
 {/* API STATUS */}
-                <td className={item.found ? "foundItem" : "notFoundItem"}>
+                <td className={item.found ? "foundItem" : "error"}>
                   {item.found ? "Found" : "Not Found"}
                 </td>
 
@@ -96,14 +98,14 @@ const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete 
                   {isEditing ? (
                     <input
                       type="number"
-                      placeholder="shelf life"
-                      value={draft.shelfLifeDays}
+                      placeholder="Shelf Life"
+                      value={draft.shelfLifeDays ?? ''}
                       onChange={(e) => {setDraft( prev => ({...prev, shelfLifeDays: e.target.value}))}}
                     />
                   ) : (
                     info.shelfLifeDays || "???"
                   )}
-                  {editError && <p>{editError}</p>}
+                  {isEditing && editError && <p className="error">{editError}</p>}
                 </td>
 {/* USE BY */}
                 <td>{info.useBy || "???"}</td>
@@ -116,8 +118,9 @@ const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete 
                       aria-label="Edit item brand, name, and shelf life"
                       className="editIconBtn"
                       onClick={() => {
-                        setDraft({brand: info.brand ?? '', name: info.name ?? '', shelfLifeDays: info.shelfLifeDays})
+                        setDraft({brand: info.brand ?? '', name: info.name ?? '', shelfLifeDays: info.shelfLifeDays ?? ''})
                         setEditingBarcode(item.barcode);
+                        setEditError('');
                       }}
                     >
                       <Pencil />
@@ -130,14 +133,22 @@ const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete 
                         title="Save"
                         aria-label="Save inputted item brand, name, and shelf life"
                         onClick={() => {
-                          let days = Number(draft.shelfLifeDays)
-                          if( days && !isWholeNumber(days)){
-                            days = null;
-                            setDraft( prev => ({...prev, shelfLifeDays: days}))
+
+                          const text = draft.shelfLifeDays;
+                          let days = null;
+
+                          if (draft.shelfLifeDays !== '') {
+                            days = Number(text);
+                            if( !isPositiveWholeNumber(days) ){
+                              setEditError('Shelf Life must be a positive whole number');
+                              return;
+                            }                            
                           }
+                          setEditError('');
                           onSave(item.barcode, {brand: draft.brand.trim(), name: draft.name.trim(), shelfLifeDays: days});
-                          setDraft({})
                           setEditingBarcode(null);
+                          setDraft({})
+
                         }}>
                         <Save />
                       </button>
