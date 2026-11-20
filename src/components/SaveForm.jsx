@@ -12,14 +12,6 @@ const SaveForm = ({ onSave, initialBrand, initialName, barcode }) => {
 
     const days = Number(shelfLifeDays);
 
-<<<<<<< HEAD
-            <button>Save</button>
-        </form>
-    );
-}
- 
-export default SaveForm;
-=======
     if (!isPositiveWholeNumber(days)) {
       setError("Enter a whole number of days");
       return;
@@ -77,4 +69,3 @@ export default SaveForm;
 };
 
 export default SaveForm;
->>>>>>> save-form
