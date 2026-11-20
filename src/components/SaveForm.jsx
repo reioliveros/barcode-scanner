@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { isWholeNumber } from "../utils/isWholeNumber";
 
-const SaveForm = ({ onSave, initialBrand, initialName, initialShelf }) => {
+const SaveForm = ({ onSave, initialBrand, initialName, barcode }) => {
   const [brand, setBrand] = useState(initialBrand || "");
   const [name, setName] = useState(initialName || "");
-  const [shelfLifeDays, setShelfLifeDays] = useState(initialShelf || "");
+  const [shelfLifeDays, setShelfLifeDays] = useState("");
   const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
@@ -18,7 +18,7 @@ const SaveForm = ({ onSave, initialBrand, initialName, initialShelf }) => {
     }
 
     setError("");
-    onSave({ brand: brand.trim(), name: name.trim(), shelfLifeDays: days });
+    onSave(barcode, { brand: brand.trim(), name: name.trim(), shelfLifeDays: days });
   };
 
   return (

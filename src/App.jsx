@@ -58,7 +58,7 @@ function App() {
     setHistory([]);
   }
 
-  const handleSave = (data) => {
+  const handleSave = (barcode, data) => {
     setMyProducts( (prev) => {
       return saveProduct(prev, barcode, data)
     })
@@ -94,7 +94,7 @@ function App() {
           onSave={handleSave}
           initialBrand={product?.brands}
           initialName={product?.product_name}
-          initialShelf={myProducts[barcode]?.shelfLifeDays}
+          barcode={barcode}
         >
         </SaveForm>
       }

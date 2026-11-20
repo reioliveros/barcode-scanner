@@ -6,6 +6,7 @@ import { Search, Save, X, Trash, Pencil } from "lucide-react";
 const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete }) => {
   const [editingBarcode, setEditingBarcode] = useState(null);
   const [draft, setDraft] = useState({});
+  const [editError, setEditError] = useState('');
 
   return (
     <div className="history zebra">
@@ -26,6 +27,7 @@ const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete 
 
           {history.map((item) => {
             const info = describeItem(item, myProducts[item.barcode]);
+            const isEditing = editingBarcode === item.barcode;
             return (
               <tr key={item.barcode}>
                 <td>
@@ -63,11 +65,11 @@ const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete 
 
 {/* BRAND */}
                 <td>
-                  {editingBarcode === item.barcode ? (
+                  {isEditing ? (
                     <input
                       type="text"
                       placeholder="brand"
-                      defaultValue={info.brand}
+                      value={draft.brand}
                       onChange={(e) => {setDraft( prev => ({...prev, brand: e.target.value}))}}
                     />
                   ) : (
@@ -77,11 +79,11 @@ const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete 
 
 {/* NAME */}
                 <td>
-                  {editingBarcode === item.barcode ? (
+                  {isEditing ? (
                     <input
                       type="text"
                       placeholder="item name"
-                      defaultValue={info.name}
+                      value={draft.name}
                       onChange={(e) => {setDraft( prev => ({...prev, name: e.target.value}))}}
                     />
                   ) : (
@@ -91,16 +93,17 @@ const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete 
 
 {/* SHELF LIFE */}
                 <td>
-                  {editingBarcode === item.barcode ? (
+                  {isEditing ? (
                     <input
                       type="number"
                       placeholder="shelf life"
-                      defaultValue={info.shelfLifeDays}
+                      value={draft.shelfLifeDays}
                       onChange={(e) => {setDraft( prev => ({...prev, shelfLifeDays: e.target.value}))}}
                     />
                   ) : (
                     info.shelfLifeDays || "???"
                   )}
+                  {editError && <p>{editError}</p>}
                 </td>
 {/* USE BY */}
                 <td>{info.useBy || "???"}</td>
@@ -110,10 +113,10 @@ const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete 
                   {editingBarcode !== item.barcode && (
                     <button
                       title="Edit"
-                      aria-label="Edit item brand, namd, and shelf life"
+                      aria-label="Edit item brand, name, and shelf life"
                       className="editIconBtn"
                       onClick={() => {
-                        setDraft({brand: info.brand, name: info.name, shelfLifeDays: info.shelfLifeDays})
+                        setDraft({brand: info.brand ?? '', name: info.name ?? '', shelfLifeDays: info.shelfLifeDays})
                         setEditingBarcode(item.barcode);
                       }}
                     >
@@ -121,17 +124,18 @@ const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete 
                     </button>
                   )}
 
-                  {editingBarcode === item.barcode && (
+                  {isEditing && (
                     <div className="saveCancelBtns">
                       <button 
                         title="Save"
                         aria-label="Save inputted item brand, name, and shelf life"
                         onClick={() => {
-                          const days = Number(draft.shelfLifeDays)
-                          if( draft.shelfLifeDays && !isWholeNumber(days)){
-                            return;
+                          let days = Number(draft.shelfLifeDays)
+                          if( days && !isWholeNumber(days)){
+                            days = null;
+                            setDraft( prev => ({...prev, shelfLifeDays: days}))
                           }
-                          onSave({brand: draft.brand.trim(), name: draft.name.trim(), shelfLifeDays: days});
+                          onSave(item.barcode, {brand: draft.brand.trim(), name: draft.name.trim(), shelfLifeDays: days});
                           setDraft({})
                           setEditingBarcode(null);
                         }}>
@@ -144,6 +148,7 @@ const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete 
                       onClick={() => {
                         setEditingBarcode(null);
                         setDraft({});
+                        setEditError('')
                       }}>
                         <X></X>
                       </button>
