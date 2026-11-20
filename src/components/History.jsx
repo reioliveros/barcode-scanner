@@ -1,22 +1,7 @@
-<<<<<<< HEAD
-const History = ({history, onClear, onChangeItem}) => {
-    return (
-        <div className="history zebra">
-            <table>
-                <caption>Recently Scanned Items:</caption>
-                <tbody>
-                <tr>
-                    <th>Status</th>
-                    <th>Brand</th>
-                    <th>Item Name</th>
-                    <th colSpan={2}>Barcode</th>
-                </tr>
-=======
 import { useState } from "react";
 import { describeItem } from "../utils/describeItem";
 import { isPositiveWholeNumber } from "../utils/isPositiveWholeNumber"
 import { Search, Save, X, Trash, Pencil } from "lucide-react";
->>>>>>> save-form
 
 const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete }) => {
   const [editingBarcode, setEditingBarcode] = useState(null);
