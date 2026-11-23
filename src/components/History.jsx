@@ -3,7 +3,7 @@ import { describeItem } from "../utils/describeItem";
 import { isPositiveWholeNumber } from "../utils/isPositiveWholeNumber"
 import { Search, Save, X, Trash, Pencil } from "lucide-react";
 
-const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete, onExport }) => {
+const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete, onClearData, onExport }) => {
   const [editingBarcode, setEditingBarcode] = useState(null);
   const [draft, setDraft] = useState({});
   const [editError, setEditError] = useState('');
@@ -182,10 +182,13 @@ const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete,
       )}
       </div>
 
-{/* EXPORT */}
+{/* CLEAR DATA / EXPORT */}
       <div>
       {Object.keys(myProducts).length !== 0 ? (
-        <button onClick={onExport} >Export Data</button>
+        <div>
+          <button onClick={onClearData}>Clear Data</button>
+          <button onClick={onExport} >Export Data</button>
+        </div>
       ) : (
         ""
       )}

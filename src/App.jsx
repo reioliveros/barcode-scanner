@@ -62,6 +62,14 @@ function App() {
     setHistory([]);
   }
 
+  const handleClearData = () => {
+    const userChoice = window.confirm("Are you sure you want to delete all of your saved product data?");
+
+    if(userChoice){
+      setMyProducts({})
+    }
+  }
+
   const handleSave = (barcode, data) => {
     setMyProducts( (prev) => {
       return saveProduct(prev, barcode, data)
@@ -121,6 +129,7 @@ function App() {
         onChangeItem={handleScan}
         onSave={handleSave}
         onDelete={handleDelete}
+        onClearData={handleClearData}
         onExport={handleExport}
       />
 
