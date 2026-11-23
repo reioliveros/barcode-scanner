@@ -81,6 +81,21 @@ function App() {
     return false
   }
 
+  const handleExport = () => {
+    const content = {version: "1.0", exportedAt: new Date().toISOString(), products: {...myProducts}}
+    const contentString = JSON.stringify(content);
+
+    const blob = new Blob([contentString], { type: 'application/json'});
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `product-data-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
 
   return (
     <div>
@@ -112,6 +127,7 @@ function App() {
           onChangeItem={handleScan}
           onSave={handleSave}
           onDelete={handleDelete}
+          onExport={handleExport}
         />
         : <p>No scans yet</p>}
 
