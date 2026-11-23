@@ -90,7 +90,7 @@ function App() {
 
       {scanning && <Scanner onDetect={handleDetect}/>}
       <ScanResult barcode={barcode}></ScanResult>
-      <ProductInfo status={status} product={product} onRetry={retry}></ProductInfo>
+      <ProductInfo status={status} product={product} myProduct={myProducts[barcode]} onRetry={retry}></ProductInfo>
       {barcode && status !== 'loading' && !myProducts[barcode] && status !== 'error' &&
         <SaveForm
           key={barcode}

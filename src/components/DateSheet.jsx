@@ -1,11 +1,6 @@
+import { daysFromToday } from "../utils/daysFromToday";
 const DateSheet = () => {
     const today = new Date();
-
-    const daysFromToday = (days) => {
-        let date = new Date();
-        date.setDate(date.getDate() + days);
-        return date.toDateString();
-    }
 
     const days = [5, 7, 10, 14, 21, 30, 45, 60, 90];
 
