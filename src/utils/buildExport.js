@@ -1,4 +1,4 @@
-const EXPORT_VERSION = 1;
+export const EXPORT_VERSION = 1;
 
 export function buildExport(products, date) {
     return {
