@@ -10,6 +10,8 @@ import DateSheet from './components/DateSheet'
 import SaveForm from './components/SaveForm'
 import {saveProduct, deleteProduct} from './utils/myProducts'
 import './App.css';
+import { buildExport } from './utils/buildExport';
+import { downloadJson } from './utils/downloadJson';
 
 function App() {
 
@@ -82,18 +84,9 @@ function App() {
   }
 
   const handleExport = () => {
-    const content = {version: "1.0", exportedAt: new Date().toISOString(), products: {...myProducts}}
-    const contentString = JSON.stringify(content);
-
-    const blob = new Blob([contentString], { type: 'application/json'});
-    const url = window.URL.createObjectURL(blob);
-
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `product-data-${new Date().toISOString().slice(0, 10)}.json`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const today = new Date();
+    const content = buildExport(myProducts, today.toISOString())
+    downloadJson(`product-data-${today.toISOString().slice(0, 10)}.json`, content);
   }
 
 
