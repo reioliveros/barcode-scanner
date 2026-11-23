@@ -7,7 +7,9 @@ const ProductInfo = ({status, product, myProduct, onRetry}) => {
     return (
         <div>
             {status === 'loading' && <div>Looking up product...</div>}
-            {status === 'error' && <div>Could not connect to database</div>} 
+            {status === 'error' && <div>Could not connect to database
+                <button className='tryAgainBtn' onClick={onRetry} >Try Again</button>    
+            </div>} 
             {(status === 'found' || status === 'not-found') && 
                 <div>
                     <img src={product?.image_front_small_url || defaultImage} alt={product?.product_name || 'No image available'} />
