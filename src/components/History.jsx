@@ -10,6 +10,7 @@ const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete,
 
   return (
     <div className="history zebra">
+      {history.length > 0 &&
       <table>
         <caption>Recently Scanned Items:</caption>
         <tbody>
@@ -171,12 +172,13 @@ const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete,
           })}
         </tbody>
       </table>
+      }
 {/* CLEAR HISTORY */}
       <div>
       {history.length > 0 ? (
         <button onClick={onClear}>Clear History</button>
       ) : (
-        "No history"
+        "No Scans Yet"
       )}
       </div>
 

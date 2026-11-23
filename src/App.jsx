@@ -10,8 +10,10 @@ import DateSheet from './components/DateSheet'
 import SaveForm from './components/SaveForm'
 import {saveProduct, deleteProduct} from './utils/myProducts'
 import './App.css';
+
 import { buildExport } from './utils/buildExport';
 import { downloadJson } from './utils/downloadJson';
+import { localDateStamp } from './utils/localDateStamp';
 
 function App() {
 
@@ -86,7 +88,7 @@ function App() {
   const handleExport = () => {
     const today = new Date();
     const content = buildExport(myProducts, today.toISOString())
-    downloadJson(`product-data-${today.toISOString().slice(0, 10)}.json`, content);
+    downloadJson(`product-data-${localDateStamp(today)}.json`, content);
   }
 
 
