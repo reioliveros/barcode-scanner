@@ -112,17 +112,15 @@ function App() {
       <div><button className="scanBtn" onClick={handleToggleScan}>{scanning ? "Stop Scan" : "Scan Item"}</button></div>
 
 
-      {history.length > 0 ? 
-        <History
-          history={history}
-          myProducts={myProducts}
-          onClear={handleClearHistory}
-          onChangeItem={handleScan}
-          onSave={handleSave}
-          onDelete={handleDelete}
-          onExport={handleExport}
-        />
-        : <p>No scans yet</p>}
+      <History
+        history={history}
+        myProducts={myProducts}
+        onClear={handleClearHistory}
+        onChangeItem={handleScan}
+        onSave={handleSave}
+        onDelete={handleDelete}
+        onExport={handleExport}
+      />
 
       <DateSheet></DateSheet>
     </div>

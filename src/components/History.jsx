@@ -172,18 +172,22 @@ const History = ({ history, myProducts, onClear, onChangeItem, onSave, onDelete,
         </tbody>
       </table>
 {/* CLEAR HISTORY */}
+      <div>
       {history.length > 0 ? (
         <button onClick={onClear}>Clear History</button>
       ) : (
-        ""
+        "No history"
       )}
+      </div>
 
 {/* EXPORT */}
+      <div>
       {Object.keys(myProducts).length !== 0 ? (
         <button onClick={onExport} >Export Data</button>
       ) : (
         ""
       )}
+      </div>
     </div>
   );
 };
